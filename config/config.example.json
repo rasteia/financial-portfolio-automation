@@ -1,0 +1,46 @@
+{
+  "alpaca": {
+    "api_key": "YOUR_ALPACA_API_KEY",
+    "secret_key": "YOUR_ALPACA_SECRET_KEY",
+    "base_url": "https://paper-api.alpaca.markets",
+    "data_feed": "iex"
+  },
+  "risk_limits": {
+    "max_position_size": "10000.00",
+    "max_portfolio_concentration": 0.20,
+    "max_daily_loss": "1000.00",
+    "max_drawdown": 0.10,
+    "stop_loss_percentage": 0.05
+  },
+  "database": {
+    "url": "sqlite:///portfolio_automation.db",
+    "echo": false,
+    "pool_size": 5,
+    "max_overflow": 10
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file_path": "logs/portfolio_automation.log",
+    "max_file_size": 10485760,
+    "backup_count": 5
+  },
+  "notifications": {
+    "email_enabled": false,
+    "email_smtp_server": "smtp.gmail.com",
+    "email_smtp_port": 587,
+    "email_username": "your_email@gmail.com",
+    "email_password": "your_app_password",
+    "email_recipients": ["recipient@example.com"],
+    "webhook_enabled": false,
+    "webhook_url": "https://hooks.slack.com/services/YOUR/WEBHOOK/URL",
+    "webhook_timeout": 30
+  },
+  "cache_ttl_quotes": 1,
+  "cache_ttl_account": 30,
+  "cache_ttl_historical": 3600,
+  "trading_enabled": false,
+  "paper_trading": true,
+  "mcp_enabled": true,
+  "mcp_port": 8080
+}

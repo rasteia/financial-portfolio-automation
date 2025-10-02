@@ -1,0 +1,47 @@
+{
+  "alpaca": {
+    "api_key": "PK84S6XGSBWSPHNMYDT3",
+    "secret_key": "ycqrtzFjfq8XkPKZ9Lr3YyAV9QbYaEN33P1X9PFU",
+    "base_url": "https://paper-api.alpaca.markets",
+    "data_feed": "iex",
+    "environment": "paper"
+  },
+  "risk_limits": {
+    "max_position_size": "10000.00",
+    "max_portfolio_concentration": 0.20,
+    "max_daily_loss": "1000.00",
+    "max_drawdown": 0.10,
+    "stop_loss_percentage": 0.05
+  },
+  "database": {
+    "url": "sqlite:///portfolio_automation.db",
+    "echo": false,
+    "pool_size": 5,
+    "max_overflow": 10
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file_path": "logs/portfolio_automation.log",
+    "max_file_size": 10485760,
+    "backup_count": 5
+  },
+  "notifications": {
+    "email_enabled": false,
+    "email_smtp_server": "smtp.gmail.com",
+    "email_smtp_port": 587,
+    "email_username": "",
+    "email_password": "",
+    "email_recipients": [],
+    "webhook_enabled": false,
+    "webhook_url": "",
+    "webhook_timeout": 30
+  },
+  "cache_ttl_quotes": 1,
+  "cache_ttl_account": 30,
+  "cache_ttl_historical": 3600,
+  "trading_enabled": true,
+  "paper_trading": true,
+  "mcp_enabled": true,
+  "mcp_port": 8080
+}

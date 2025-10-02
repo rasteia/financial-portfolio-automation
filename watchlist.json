@@ -1,0 +1,85 @@
+{
+  "symbols": [
+    {
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "sector": "Technology",
+      "reason": "Strong ecosystem, consistent revenue growth, excellent margins",
+      "added_date": "2025-09-30T22:32:14.176623",
+      "growth_potential": "High"
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft Corporation",
+      "sector": "Technology",
+      "reason": "Cloud dominance, AI leadership, recurring revenue model",
+      "added_date": "2025-09-30T22:32:14.176623",
+      "growth_potential": "High"
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA Corporation",
+      "sector": "Technology",
+      "reason": "AI chip leader, data center growth, gaming strength",
+      "added_date": "2025-09-30T22:32:14.176623",
+      "growth_potential": "Very High"
+    },
+    {
+      "symbol": "JNJ",
+      "name": "Johnson & Johnson",
+      "sector": "Healthcare",
+      "reason": "Diversified healthcare, strong pipeline, dividend aristocrat",
+      "added_date": "2025-09-30T22:32:14.176623",
+      "growth_potential": "Moderate"
+    },
+    {
+      "symbol": "JPM",
+      "name": "JPMorgan Chase & Co.",
+      "sector": "Financial",
+      "reason": "Leading investment bank, strong balance sheet, rising rates benefit",
+      "added_date": "2025-09-30T22:32:14.176623",
+      "growth_potential": "Moderate"
+    },
+    {
+      "symbol": "UNH",
+      "name": "UnitedHealth Group",
+      "sector": "Healthcare",
+      "reason": "Healthcare services leader, consistent growth, strong margins",
+      "added_date": "2025-09-30T22:32:14.176623",
+      "growth_potential": "High"
+    },
+    {
+      "symbol": "AMZN",
+      "name": "Amazon.com Inc.",
+      "sector": "Consumer",
+      "reason": "E-commerce dominance, AWS growth, logistics network",
+      "added_date": "2025-09-30T22:32:14.176623",
+      "growth_potential": "High"
+    },
+    {
+      "symbol": "SPY",
+      "name": "SPDR S&P 500 ETF Trust",
+      "sector": "ETFs",
+      "reason": "Broad market exposure, low fees, high liquidity",
+      "added_date": "2025-09-30T22:32:14.176623",
+      "growth_potential": "Market"
+    },
+    {
+      "symbol": "QQQ",
+      "name": "Invesco QQQ Trust",
+      "sector": "ETFs",
+      "reason": "Tech-heavy Nasdaq exposure, growth focus",
+      "added_date": "2025-09-30T22:32:14.176623",
+      "growth_potential": "High"
+    },
+    {
+      "symbol": "VTI",
+      "name": "Vanguard Total Stock Market ETF",
+      "sector": "ETFs",
+      "reason": "Total US market exposure, ultra-low fees",
+      "added_date": "2025-09-30T22:32:14.176623",
+      "growth_potential": "Market"
+    }
+  ],
+  "last_updated": "2025-09-30T22:32:14.176623"
+}
