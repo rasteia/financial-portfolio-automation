@@ -251,7 +251,10 @@ async def startup_event():
         
         # Initialize MCP tools
         from financial_portfolio_automation.mcp.portfolio_tools import PortfolioTools
-        portfolio_tools = PortfolioTools()
+        from financial_portfolio_automation.config.settings import get_config
+        
+        config = get_config()
+        portfolio_tools = PortfolioTools(config.__dict__)
         logger.info("MCP tools initialized")
         
         logger.info("API startup completed successfully")

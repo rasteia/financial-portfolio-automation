@@ -123,46 +123,52 @@ class ConfigManager:
         
         # Create configuration objects
         try:
+            # Handle nested JSON structure or flat environment variables
+            alpaca_data = config_data.get("alpaca", {})
             alpaca_config = AlpacaConfig(
-                api_key=config_data.get("ALPACA_API_KEY", ""),
-                secret_key=config_data.get("ALPACA_SECRET_KEY", ""),
-                base_url=config_data.get("ALPACA_BASE_URL", "https://paper-api.alpaca.markets"),
-                data_feed=config_data.get("ALPACA_DATA_FEED", "iex")
+                api_key=alpaca_data.get("api_key") or config_data.get("ALPACA_API_KEY", ""),
+                secret_key=alpaca_data.get("secret_key") or config_data.get("ALPACA_SECRET_KEY", ""),
+                base_url=alpaca_data.get("base_url") or config_data.get("ALPACA_BASE_URL", "https://paper-api.alpaca.markets"),
+                data_feed=alpaca_data.get("data_feed") or config_data.get("ALPACA_DATA_FEED", "iex")
             )
             
+            risk_data = config_data.get("risk_limits", {})
             risk_limits = RiskLimits(
-                max_position_size=Decimal(config_data.get("MAX_POSITION_SIZE", "10000.00")),
-                max_portfolio_concentration=float(config_data.get("MAX_PORTFOLIO_CONCENTRATION", "0.20")),
-                max_daily_loss=Decimal(config_data.get("MAX_DAILY_LOSS", "1000.00")),
-                max_drawdown=float(config_data.get("MAX_DRAWDOWN", "0.10")),
-                stop_loss_percentage=float(config_data.get("STOP_LOSS_PERCENTAGE", "0.05"))
+                max_position_size=Decimal(risk_data.get("max_position_size") or config_data.get("MAX_POSITION_SIZE", "10000.00")),
+                max_portfolio_concentration=float(risk_data.get("max_portfolio_concentration") or config_data.get("MAX_PORTFOLIO_CONCENTRATION", "0.20")),
+                max_daily_loss=Decimal(risk_data.get("max_daily_loss") or config_data.get("MAX_DAILY_LOSS", "1000.00")),
+                max_drawdown=float(risk_data.get("max_drawdown") or config_data.get("MAX_DRAWDOWN", "0.10")),
+                stop_loss_percentage=float(risk_data.get("stop_loss_percentage") or config_data.get("STOP_LOSS_PERCENTAGE", "0.05"))
             )
             
+            db_data = config_data.get("database", {})
             database_config = DatabaseConfig(
-                url=config_data.get("DATABASE_URL", "sqlite:///portfolio_automation.db"),
-                echo=config_data.get("DATABASE_ECHO", "false").lower() == "true",
-                pool_size=int(config_data.get("DATABASE_POOL_SIZE", "5")),
-                max_overflow=int(config_data.get("DATABASE_MAX_OVERFLOW", "10"))
+                url=db_data.get("url") or config_data.get("DATABASE_URL", "sqlite:///portfolio_automation.db"),
+                echo=db_data.get("echo") or config_data.get("DATABASE_ECHO", "false").lower() == "true",
+                pool_size=int(db_data.get("pool_size") or config_data.get("DATABASE_POOL_SIZE", "5")),
+                max_overflow=int(db_data.get("max_overflow") or config_data.get("DATABASE_MAX_OVERFLOW", "10"))
             )
             
+            log_data = config_data.get("logging", {})
             logging_config = LoggingConfig(
-                level=config_data.get("LOG_LEVEL", "INFO"),
-                format=config_data.get("LOG_FORMAT", "%(asctime)s - %(name)s - %(levelname)s - %(message)s"),
-                file_path=config_data.get("LOG_FILE_PATH"),
-                max_file_size=int(config_data.get("LOG_MAX_FILE_SIZE", str(10 * 1024 * 1024))),
-                backup_count=int(config_data.get("LOG_BACKUP_COUNT", "5"))
+                level=log_data.get("level") or config_data.get("LOG_LEVEL", "INFO"),
+                format=log_data.get("format") or config_data.get("LOG_FORMAT", "%(asctime)s - %(name)s - %(levelname)s - %(message)s"),
+                file_path=log_data.get("file_path") or config_data.get("LOG_FILE_PATH"),
+                max_file_size=int(log_data.get("max_file_size") or config_data.get("LOG_MAX_FILE_SIZE", str(10 * 1024 * 1024))),
+                backup_count=int(log_data.get("backup_count") or config_data.get("LOG_BACKUP_COUNT", "5"))
             )
             
+            notif_data = config_data.get("notifications", {})
             notification_config = NotificationConfig(
-                email_enabled=config_data.get("EMAIL_ENABLED", "false").lower() == "true",
-                email_smtp_server=config_data.get("EMAIL_SMTP_SERVER"),
-                email_smtp_port=int(config_data.get("EMAIL_SMTP_PORT", "587")),
-                email_username=config_data.get("EMAIL_USERNAME"),
-                email_password=config_data.get("EMAIL_PASSWORD"),
-                email_recipients=config_data.get("EMAIL_RECIPIENTS", "").split(",") if config_data.get("EMAIL_RECIPIENTS") else [],
-                webhook_enabled=config_data.get("WEBHOOK_ENABLED", "false").lower() == "true",
-                webhook_url=config_data.get("WEBHOOK_URL"),
-                webhook_timeout=int(config_data.get("WEBHOOK_TIMEOUT", "30"))
+                email_enabled=notif_data.get("email_enabled") or config_data.get("EMAIL_ENABLED", "false").lower() == "true",
+                email_smtp_server=notif_data.get("email_smtp_server") or config_data.get("EMAIL_SMTP_SERVER"),
+                email_smtp_port=int(notif_data.get("email_smtp_port") or config_data.get("EMAIL_SMTP_PORT", "587")),
+                email_username=notif_data.get("email_username") or config_data.get("EMAIL_USERNAME"),
+                email_password=notif_data.get("email_password") or config_data.get("EMAIL_PASSWORD"),
+                email_recipients=notif_data.get("email_recipients") or (config_data.get("EMAIL_RECIPIENTS", "").split(",") if config_data.get("EMAIL_RECIPIENTS") else []),
+                webhook_enabled=notif_data.get("webhook_enabled") or config_data.get("WEBHOOK_ENABLED", "false").lower() == "true",
+                webhook_url=notif_data.get("webhook_url") or config_data.get("WEBHOOK_URL"),
+                webhook_timeout=int(notif_data.get("webhook_timeout") or config_data.get("WEBHOOK_TIMEOUT", "30"))
             )
             
             self._config = SystemConfig(
@@ -171,13 +177,13 @@ class ConfigManager:
                 database=database_config,
                 logging=logging_config,
                 notifications=notification_config,
-                cache_ttl_quotes=int(config_data.get("CACHE_TTL_QUOTES", "1")),
-                cache_ttl_account=int(config_data.get("CACHE_TTL_ACCOUNT", "30")),
-                cache_ttl_historical=int(config_data.get("CACHE_TTL_HISTORICAL", "3600")),
-                trading_enabled=config_data.get("TRADING_ENABLED", "false").lower() == "true",
-                paper_trading=config_data.get("PAPER_TRADING", "true").lower() == "true",
-                mcp_enabled=config_data.get("MCP_ENABLED", "true").lower() == "true",
-                mcp_port=int(config_data.get("MCP_PORT", "8080"))
+                cache_ttl_quotes=int(config_data.get("cache_ttl_quotes") or config_data.get("CACHE_TTL_QUOTES", "1")),
+                cache_ttl_account=int(config_data.get("cache_ttl_account") or config_data.get("CACHE_TTL_ACCOUNT", "30")),
+                cache_ttl_historical=int(config_data.get("cache_ttl_historical") or config_data.get("CACHE_TTL_HISTORICAL", "3600")),
+                trading_enabled=config_data.get("trading_enabled") or config_data.get("TRADING_ENABLED", "false").lower() == "true",
+                paper_trading=config_data.get("paper_trading") or config_data.get("PAPER_TRADING", "true").lower() == "true",
+                mcp_enabled=config_data.get("mcp_enabled") or config_data.get("MCP_ENABLED", "true").lower() == "true",
+                mcp_port=int(config_data.get("mcp_port") or config_data.get("MCP_PORT", "8080"))
             )
             
             return self._config
