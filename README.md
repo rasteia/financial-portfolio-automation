@@ -295,6 +295,19 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Consult with qualified financial advisors before making investment decisions
 - The authors are not responsible for any financial losses
 
+## 📚 Documentation
+
+### User Documentation
+- **Installation Guide**: [docs/deployment/installation_guide.md](docs/deployment/installation_guide.md)
+- **Troubleshooting**: [docs/deployment/troubleshooting_guide.md](docs/deployment/troubleshooting_guide.md)
+- **API Reference**: Coming soon
+
+### Developer Documentation
+- **Development Overview**: [docs/development/README.md](docs/development/README.md)
+- **Task Handoffs**: [docs/development/handoffs/README.md](docs/development/handoffs/README.md)
+- **System Reports**: [docs/development/system-reports/README.md](docs/development/system-reports/README.md)
+- **Architecture**: See project structure above
+
 ## 🆘 Support
 
 - 📖 **Documentation**: Check the `/docs` directory for detailed guides

@@ -1,0 +1,100 @@
+name: Documentation Check
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check-docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Check documentation structure
+      run: |
+        echo "Checking documentation structure..."
+        
+        # Check that main documentation directories exist
+        if [ ! -d "docs/development" ]; then
+          echo "❌ docs/development directory missing"
+          exit 1
+        fi
+        
+        if [ ! -d "docs/development/handoffs" ]; then
+          echo "❌ docs/development/handoffs directory missing"
+          exit 1
+        fi
+        
+        if [ ! -d "docs/development/system-reports" ]; then
+          echo "❌ docs/development/system-reports directory missing"
+          exit 1
+        fi
+        
+        # Check for README files
+        if [ ! -f "docs/development/README.md" ]; then
+          echo "❌ docs/development/README.md missing"
+          exit 1
+        fi
+        
+        if [ ! -f "docs/development/handoffs/README.md" ]; then
+          echo "❌ docs/development/handoffs/README.md missing"
+          exit 1
+        fi
+        
+        if [ ! -f "docs/development/system-reports/README.md" ]; then
+          echo "❌ docs/development/system-reports/README.md missing"
+          exit 1
+        fi
+        
+        echo "✅ Documentation structure is valid"
+    
+    - name: Check for orphaned task files
+      run: |
+        echo "Checking for orphaned task files in root..."
+        
+        # Check if any TASK_*_HANDOFF.md or TASK_*_COMPLETION_SUMMARY.md files exist in root
+        if ls TASK_*_HANDOFF.md 1> /dev/null 2>&1; then
+          echo "❌ Found orphaned handoff files in root directory:"
+          ls TASK_*_HANDOFF.md
+          echo "Please move these to docs/development/handoffs/"
+          exit 1
+        fi
+        
+        if ls TASK_*_COMPLETION_SUMMARY.md 1> /dev/null 2>&1; then
+          echo "❌ Found orphaned completion summary files in root directory:"
+          ls TASK_*_COMPLETION_SUMMARY.md
+          echo "Please move these to docs/development/handoffs/"
+          exit 1
+        fi
+        
+        if ls SYSTEM_*_REPORT.md 1> /dev/null 2>&1; then
+          echo "❌ Found orphaned system report files in root directory:"
+          ls SYSTEM_*_REPORT.md
+          echo "Please move these to docs/development/system-reports/"
+          exit 1
+        fi
+        
+        echo "✅ No orphaned documentation files found"
+    
+    - name: Validate markdown files
+      run: |
+        echo "Validating markdown files..."
+        
+        # Check that all markdown files in docs have proper headers
+        find docs/ -name "*.md" -type f | while read file; do
+          if [ ! -s "$file" ]; then
+            echo "❌ Empty file: $file"
+            exit 1
+          fi
+          
+          # Check if file starts with a header
+          if ! head -n 1 "$file" | grep -q "^# "; then
+            echo "❌ File missing main header: $file"
+            exit 1
+          fi
+        done
+        
+        echo "✅ All markdown files are valid"
