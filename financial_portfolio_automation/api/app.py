@@ -86,7 +86,7 @@ async def health_check():
         
         # Test MCP tools availability
         from financial_portfolio_automation.mcp.portfolio_tools import PortfolioTools
-        portfolio_tools = PortfolioTools()
+        portfolio_tools = PortfolioTools(None)
         
         return {
             "status": "healthy",
@@ -254,7 +254,7 @@ async def startup_event():
         from financial_portfolio_automation.config.settings import get_config
         
         config = get_config()
-        portfolio_tools = PortfolioTools(config.__dict__)
+        portfolio_tools = PortfolioTools(config)
         logger.info("MCP tools initialized")
         
         logger.info("API startup completed successfully")

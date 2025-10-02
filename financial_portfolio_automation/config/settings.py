@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 
 from ..exceptions import ConfigurationError
+from ..models.config import Environment, DataFeed
 
 
 @dataclass
@@ -20,12 +21,19 @@ class AlpacaConfig:
     """Configuration for Alpaca Markets API."""
     api_key: str
     secret_key: str
+    environment: Environment = Environment.PAPER  # Trading environment
     base_url: str = "https://paper-api.alpaca.markets"  # Default to paper trading
-    data_feed: str = "iex"  # Default to IEX data feed
+    data_feed: DataFeed = DataFeed.IEX  # Default to IEX data feed
     
     def __post_init__(self):
         if not self.api_key or not self.secret_key:
             raise ConfigurationError("Alpaca API key and secret key are required")
+        
+        if not isinstance(self.environment, Environment):
+            raise ConfigurationError("Alpaca environment must be Environment.PAPER or Environment.LIVE")
+        
+        if not isinstance(self.data_feed, DataFeed):
+            raise ConfigurationError("Alpaca data feed must be a valid DataFeed enum value")
 
 
 @dataclass
@@ -125,11 +133,27 @@ class ConfigManager:
         try:
             # Handle nested JSON structure or flat environment variables
             alpaca_data = config_data.get("alpaca", {})
+            
+            # Convert string values to enums
+            environment_str = alpaca_data.get("environment") or config_data.get("ALPACA_ENVIRONMENT", "paper")
+            data_feed_str = alpaca_data.get("data_feed") or config_data.get("ALPACA_DATA_FEED", "iex")
+            
+            try:
+                environment = Environment(environment_str.lower())
+            except ValueError:
+                raise ConfigurationError(f"Invalid environment '{environment_str}'. Must be 'paper' or 'live'")
+            
+            try:
+                data_feed = DataFeed(data_feed_str.lower())
+            except ValueError:
+                raise ConfigurationError(f"Invalid data feed '{data_feed_str}'. Must be 'iex', 'sip', or 'opra'")
+            
             alpaca_config = AlpacaConfig(
                 api_key=alpaca_data.get("api_key") or config_data.get("ALPACA_API_KEY", ""),
                 secret_key=alpaca_data.get("secret_key") or config_data.get("ALPACA_SECRET_KEY", ""),
+                environment=environment,
                 base_url=alpaca_data.get("base_url") or config_data.get("ALPACA_BASE_URL", "https://paper-api.alpaca.markets"),
-                data_feed=alpaca_data.get("data_feed") or config_data.get("ALPACA_DATA_FEED", "iex")
+                data_feed=data_feed
             )
             
             risk_data = config_data.get("risk_limits", {})

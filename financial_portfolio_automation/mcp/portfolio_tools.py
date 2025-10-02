@@ -27,12 +27,12 @@ class PortfolioTools:
     risk assessment, and allocation analysis capabilities.
     """
     
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: Any = None):
         """
         Initialize portfolio tools.
         
         Args:
-            config: Configuration dictionary containing service configurations
+            config: Configuration object or dictionary containing service configurations
         """
         self.config = config
         self.logger = logging.getLogger(__name__)

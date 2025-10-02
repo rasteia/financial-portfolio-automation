@@ -144,6 +144,9 @@ config/api_keys.py
 .env.production
 secrets.json
 api_keys.json
+config.json
+start_dashboard.py
+start_dashboard_demo.py
 
 # Trading data
 portfolio_data/

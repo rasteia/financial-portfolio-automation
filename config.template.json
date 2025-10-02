@@ -1,0 +1,30 @@
+{
+  "alpaca": {
+    "api_key": "YOUR_ALPACA_API_KEY_HERE",
+    "secret_key": "YOUR_ALPACA_SECRET_KEY_HERE",
+    "base_url": "https://paper-api.alpaca.markets",
+    "data_feed": "iex"
+  },
+  "trading_enabled": false,
+  "paper_trading": true,
+  "risk_limits": {
+    "max_position_size": "10000.00",
+    "max_portfolio_concentration": 0.20,
+    "max_daily_loss": "1000.00",
+    "max_drawdown": 0.10,
+    "stop_loss_percentage": 0.05
+  },
+  "database": {
+    "url": "sqlite:///portfolio_automation.db",
+    "echo": false
+  },
+  "logging": {
+    "level": "INFO"
+  },
+  "notifications": {
+    "email_enabled": false,
+    "webhook_enabled": false
+  },
+  "mcp_enabled": true,
+  "mcp_port": 8080
+}
